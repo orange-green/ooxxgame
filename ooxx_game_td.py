@@ -142,6 +142,7 @@ def test(agent1, agent2, e1, e2, times=500):
     plt.ylabel("win rate")
 
     plt.show()
+    plt.savefig("./pics/TD_agent_win_rate.png")
 
 
 def play(agent, index=-1):

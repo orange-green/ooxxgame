@@ -40,7 +40,7 @@ class DQNAgent:
         self.optimizer = optim.Adam(self.model.parameters(), lr=learning_rate)
         # self.update_target_model()
         self.update_counter = 0
-        self.update_frequency = 10  # 每10次replay更新一次目标模型
+        self.update_frequency = 20  # 每20次replay更新一次目标模型
         self.epsilon_decay_frequency = 20  # 每20次replay减少一次探索率
 
     def update_target_model(self):
@@ -266,11 +266,81 @@ def self_play_train(agent1: DQNAgent, agent2: DQNAgent, e1, e2, times=1000):
     plt.ylabel("win rate")
 
     plt.show()
+    plt.savefig("./pics/DQN_agent_win_rate.png")
+
+
+def play(agent, index=-1, first=False, game_count=10):
+    # # 玩家和agent对战, 每三局换先后手
+    # count = 3
+    agent.epsilon = 0  # 禁用agent探索
+    player = DQNAgent(OOXX_index=index)
+
+    for i in range(game_count):
+        # 玩家先手
+        if i % 2 == 0:
+            state = np.zeros(9)
+
+            while True:
+                position = input("Please input the position: ")
+                state[int(position)] = -1
+                print(state.copy().reshape(3, 3))
+                print("-" * 15)
+                if player.isWin(state):
+                    print("You win")
+                    break
+                if agent.isWin(state):
+                    print("Agent Win")
+                    break
+                if np.where(state == 0)[0].size == 0:
+                    print("Draw")
+                    break
+
+                action2 = agent.act(state)
+                state[action2] = agent.index
+                print(state.copy().reshape(3, 3))
+                print("-" * 15)
+                if agent.isWin(state):
+                    print("Agent Win")
+                    break
+                if np.where(state == 0)[0].size == 0:
+                    print("Draw")
+                    break
+        else:
+            # 人机先手
+            state = np.zeros(9)
+            while True:
+                action = agent.act(state)
+                state[action] = agent.index
+                print(state.copy().reshape(3, 3))
+                print("-" * 15)
+                if agent.isWin(state):
+                    print("Agent Win")
+                    break
+                if np.where(state == 0)[0].size == 0:
+                    print("Draw")
+                    break
+
+                position = input("Please input the position: ")
+                state[int(position)] = -1
+                print(state.copy().reshape(3, 3))
+                print("-" * 15)
+                if player.isWin(state):
+                    print("You win")
+                    break
+                if np.where(state == 0)[0].size == 0:
+                    print("Draw")
+                    break
 
 
 if __name__ == "__main__":
-    times = 1000
+    times = 2000
     agent1 = DQNAgent(OOXX_index=1)
     agent2 = DQNAgent(OOXX_index=-1)
 
-    self_play_train(agent1, agent2, 0.1, 0.1, times)
+    # 练习先手
+    self_play_train(agent1, agent2, 0.2, 0.2, times)
+    # 练习后手
+    self_play_train(agent2, agent1, 0.2, 0.2, times)
+
+    # 玩家 vs 人机
+    play(agent1, -1, True)
