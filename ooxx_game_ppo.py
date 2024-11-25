@@ -230,8 +230,6 @@ def self_play_train(agent1, agent2, e1, e2, times=1000):
     plt.title("PPO DQN agent win rate")
     plt.xlabel("step")
     plt.ylabel("win rate")
-
-    plt.show()
     plt.savefig("./pics/ppo_agent_win_rate.png")
 
 

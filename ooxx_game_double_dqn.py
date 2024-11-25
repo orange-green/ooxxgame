@@ -220,8 +220,6 @@ def self_play_train(agent1: DoubleDQNAgent, agent2: DoubleDQNAgent, e1, e2, time
     plt.title(" double DQN agent win rate")
     plt.xlabel("step")
     plt.ylabel("win rate")
-
-    plt.show()
     plt.savefig("./pics/double_DQN_agent_win_rate.png")
 
 

@@ -229,7 +229,7 @@ def self_play_train(agent1, agent2, e1, e2, times=1000):
     plt.xlabel("step")
     plt.ylabel("win rate")
 
-    plt.show()
+    plt.savefig("./pics/actor_critic_agent_win_rate.png")
 
 
 if __name__ == "__main__":

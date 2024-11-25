@@ -265,7 +265,6 @@ def self_play_train(agent1: DQNAgent, agent2: DQNAgent, e1, e2, times=1000):
     plt.xlabel("step")
     plt.ylabel("win rate")
 
-    plt.show()
     plt.savefig("./pics/DQN_agent_win_rate.png")
 
 
