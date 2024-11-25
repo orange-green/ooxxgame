@@ -176,8 +176,6 @@ def self_play_train(agent1, agent2, e1, e2, times=1000):
             action2 = agent2.act(state)
             next_state = state.copy()
             next_state[action2] = agent2.index
-            # print(next_state.copy().reshape(3, 3))
-            # print("-" * 15)
             if agent2.isWin(next_state):
                 competition_result[i] = -1
                 agent1.remember(agent1.current_state, agent1.previous_action, -1, next_state, True)
